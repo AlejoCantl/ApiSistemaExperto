@@ -1,11 +1,10 @@
 const Historial = require("../models/historialModel.js");
 const Hecho = require("../models/hechoModel.js");
 const Diagnostico = require("../models/DiagnosticoModel.js");
-const Usuario = require('../models/usuarioModel.js'); // Importa la nueva función
+const Usuario = require('../models/usuarioModel.js');
 const { Rules } = require("../models/rulesModel.js");
 
 const enviarRespuesta = async (req, res) => {
-  // El body ahora incluye datos del usuario
   const { nombre, apellido, identificacion, edad, sexo, respuestas } = req.body;
 
   if (!respuestas || !Array.isArray(respuestas)) {
@@ -17,9 +16,7 @@ const enviarRespuesta = async (req, res) => {
   }
 
   try {
-    // ----------------------------------------------------
     // Paso 1: Verificar y obtener el ID del usuario
-    // ----------------------------------------------------
     const {id} = await Usuario.findOrCreateUser({
       nombre,
       apellido,
@@ -104,7 +101,7 @@ const enviarRespuesta = async (req, res) => {
       id_diagnostico: diagnosticoId,
     });
 
-    // Paso 6: Retornar la respuesta final
+    // Paso 6: Retorna la respuesta final
     return res.status(201).json({
       message: "Consulta y diagnóstico procesados exitosamente.",
       historialId: historialId,
