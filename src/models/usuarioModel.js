@@ -5,7 +5,8 @@ const userQueries = {
     selectById: "select ID as id, NOMBRE as nombre, APELLIDO as apellido, IDENTIFICACION as identificacion, EDAD as edad, SEXO as sexo from usuario where identificacion = ?",
     insert: "insert into usuario (nombre, apellido, identificacion, edad, sexo) values (?, ?, ?, ?, ?)",
     update: "update usuario set nombre = ?, apellido = ?, identificacion = ?, edad = ?, sexo = ? where identificacion = ?",
-    delete: "delete from usuario where identificacion = ?"
+    delete: "delete from usuario where identificacion = ?",
+    login: "select u.NOMBRE as nombre, u.APELLIDO as apellido, u.IDENTIFICACION as identificacion, u.EDAD as edad, u.SEXO as sexo, tu.NOMBRE as rol from usuario u inner join tipo_usuario tu on u.rol_id = tu.ID where u.USERNAME = ? AND u.PASSWORD = ?"
 };
 
 class Usuario {
@@ -49,6 +50,12 @@ class Usuario {
             return { id: insertId };
         }
         return user;
+    }
+    
+    async login(username, password) {
+        const params = [username, password];
+        const [rows] = await db.query(userQueries.login, params);
+        return rows[0];
     }
 
 }

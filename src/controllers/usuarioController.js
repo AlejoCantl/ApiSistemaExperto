@@ -1,4 +1,4 @@
-const {getUsuarios, getUsuarioById, createUsuario, updateUsuario, deleteUsuario} = require("../models/usuarioModel.js");
+const {getUsuarios, getUsuarioById, createUsuario, updateUsuario, deleteUsuario, login} = require("../models/usuarioModel.js");
 
 module.exports = {
 
@@ -62,6 +62,20 @@ module.exports = {
             res.json({ message: "Usuario eliminado", data: { affectedRows } });
         } catch (err) {
             console.error("Error al eliminar usuario:", err);
+            res.status(500).json({ error: "Error interno del servidor" });
+        }
+    },
+
+    login: async (req, res) => {
+        try {
+            const { username, password } = req.body;
+            const usuario = await login(username, password);
+            if (!usuario) {
+                return res.status(401).json({ error: "Credenciales inválidas" });
+            }
+            res.json({ message: "Inicio de sesión exitoso", data: usuario });
+        } catch (err) {
+            console.error("Error al iniciar sesión:", err);
             res.status(500).json({ error: "Error interno del servidor" });
         }
     }
