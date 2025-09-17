@@ -71,7 +71,7 @@ module.exports = {
             const { username, password } = req.body;
             const usuario = await login(username, password);
             if (!usuario) {
-                return res.status(401).json({ error: "Credenciales inválidas" });
+                return res.status(401).json({ message: "Usuario o contraseña incorrectos", error: "Credenciales inválidas" });
             }
             res.json({ message: "Inicio de sesión exitoso", data: usuario });
         } catch (err) {
