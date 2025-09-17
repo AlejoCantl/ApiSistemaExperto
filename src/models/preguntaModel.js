@@ -1,7 +1,7 @@
 const db = require('../config/config.js');
 const preguntaQueries = {
-    getAllPreguntas: 'SELECT * FROM pregunta;',
-    getPreguntaById: 'SELECT * FROM pregunta WHERE id = ?;',
+    getAllPreguntas: 'SELECT ID as id, Pregunta as pregunta FROM pregunta;',
+    getPreguntaById: 'SELECT ID as id, Pregunta as pregunta FROM pregunta WHERE id = ?;',
 };
 
 const getAllPreguntas = async () => {
