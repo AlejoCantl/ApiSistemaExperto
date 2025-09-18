@@ -1,6 +1,6 @@
 const db = require('../config/config.js');
 const historialQueries = {
-      getAllHistorialByUserId: `SELECT 
+  getAllHistorialByUserId: `SELECT 
                                 historial.id AS id,
                                 historial.id_usuario AS id_usuario,
                                 historial.id_diagnostico AS id_diagnostico,
@@ -99,6 +99,22 @@ const historialQueries = {
                                 ORDER BY historial.fecha DESC;`,
   create: "INSERT INTO historial (ID_USUARIO, FECHA) VALUES (?, ?)",
   update: "UPDATE historial SET ID_USUARIO = ?, FECHA = ?, ID_DIAGNOSTICO = ? WHERE ID = ?",
+  getAllProgresoHistorial: `SELECT 
+                              JSON_OBJECT('id',u.id,'nombre', u.nombre, 'apellido', u.apellido, 'identificacion', u.identificacion, 'edad', u.edad, 'sexo', u.sexo, 'correo', u.email) AS usuario, 
+                              JSON_ARRAYAGG(JSON_OBJECT('progreso', p.descripcion, 'fecha', p.fecha)) AS progreso 
+                              FROM progreso p JOIN usuario u 
+                              ON p.id_usuario = u.id 
+                              WHERE u.identificacion = ? 
+                              GROUP BY u.id 
+                              ORDER BY p.fecha`,
+  getLastProgresoHistorial: `SELECT 
+                              JSON_OBJECT('id', u.id, 'nombre', u.nombre, 'apellido', u.apellido, 'identificacion', u.identificacion, 'edad', u.edad, 'sexo', u.sexo, 'correo', u.email) AS usuario, 
+                              JSON_OBJECT('progreso', p.descripcion, 'fecha', p.fecha) AS progreso 
+                              FROM progreso p JOIN usuario u ON p.id_usuario = u.id  
+                              WHERE u.identificacion = ? 
+                              ORDER BY p.fecha 
+                              DESC LIMIT 1`,
+  createProgreso: 'INSERT INTO progreso (id_usuario, fecha, descripcion) VALUES (?, ?, ?)'
 }
 
 class HistorialModel {
@@ -128,6 +144,23 @@ class HistorialModel {
     const [rows] = await db.query(historialQueries.getAllHistorialFromUsers);
     return rows;
   }
+
+
+  async getAllProgresoHistorial(userId) {
+    const [rows] = await db.query(historialQueries.getAllProgresoHistorial, [userId]);
+    return rows;
+  }
+
+  async getLastProgresoHistorial(userId) {
+    const [rows] = await db.query(historialQueries.getLastProgresoHistorial, [userId]);
+    return rows[0] || null;
+  }
+  async createProgreso(data) {
+    const { id_usuario, fecha, descripcion } = data;
+    const [result] = await db.query(historialQueries.createProgreso, [id_usuario, fecha, descripcion]);
+    return result.insertId;
+  }
 }
+
 
 module.exports = new HistorialModel();
