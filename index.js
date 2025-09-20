@@ -1,5 +1,5 @@
 const express = require('express');
-const bodyparser = require('body-parser');
+const serverLess = require('serverless-http');
 const cors = require('cors');
 
 const usuarioRoutes = require('./src/routes/usuarioRoutes.js');
@@ -14,8 +14,16 @@ app.use(cors());
 app.use(express.json());
 app.use('/usuario', usuarioRoutes);
 app.use('/respuesta', respuestaRoutes);
+app.use('/pregunta', preguntaRoutes);
 app.use('/historial', historialRoutes);
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
-});
+module.exports = app;
+module.exports.handler = serverLess(app);
+
+// Si corres en local, levantar el server normalmente
+if (require.main === module) {
+  const PORT = 3000;
+  app.listen(PORT, () => {
+    console.log(`Servidor local escuchando en http://localhost:${PORT}`);
+  });
+}
