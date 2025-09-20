@@ -2,10 +2,10 @@ const express = require('express');
 const serverLess = require('serverless-http');
 const cors = require('cors');
 
-const usuarioRoutes = require('./src/routes/usuarioRoutes.js');
-const respuestaRoutes = require('./src/routes/respuestaRoutes.js');
-const historialRoutes = require('./src/routes/historialRoutes.js');
-const preguntaRoutes = require('./src/routes/preguntaRoutes.js');
+const usuarioRoutes = require('../src/routes/usuarioRoutes.js');
+const respuestaRoutes = require('../src/routes/respuestaRoutes.js');
+const historialRoutes = require('../src/routes/historialRoutes.js');
+const preguntaRoutes = require('../src/routes/preguntaRoutes.js');
 
 const app = express();
 app.use(cors());
