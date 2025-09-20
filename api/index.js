@@ -1,6 +1,7 @@
 // api/index.js
 const express = require('express');
 const cors = require('cors');
+const Serverless = require('serverless-http');
 
 // Importar rutas con rutas absolutas
 const usuarioRoutes = require('../src/routes/usuarioRoutes');
@@ -42,4 +43,4 @@ app.use('*', (req, res) => {
 });
 
 // Exportar para Vercel
-module.exports = app;
+module.exports = Serverless(app);
