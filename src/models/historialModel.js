@@ -155,6 +155,7 @@ class HistorialModel {
     const [rows] = await db.query(historialQueries.getLastProgresoHistorial, [userId]);
     return rows[0] || null;
   }
+  
   async createProgreso(data) {
     const { id_usuario, fecha, descripcion } = data;
     const [result] = await db.query(historialQueries.createProgreso, [id_usuario, fecha, descripcion]);

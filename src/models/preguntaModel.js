@@ -9,12 +9,12 @@ const getAllPreguntas = async () => {
     return rows;
 };
 
-const getPreguntaById = async (id) => {
-    const [rows] = await db.query(preguntaQueries.getPreguntaById, [id]);
-    return rows[0];
-}
+// const getPreguntaById = async (id) => {
+//     const [rows] = await db.query(preguntaQueries.getPreguntaById, [id]);
+//     return rows[0];
+// }
 
 module.exports = {
     getAllPreguntas,
-    getPreguntaById,
+    // getPreguntaById,
 };

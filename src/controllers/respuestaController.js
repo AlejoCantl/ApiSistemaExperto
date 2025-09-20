@@ -152,54 +152,54 @@ const enviarRespuestaSinGuardar = async (req, res) => {
     }
 };
 
-    const enviarRespuestaProgreso = async (req, res) => {
-        const {identificacion, descripcion} = req.body;
-        if (!identificacion || !descripcion) {
-            return res.status(400).json({ error: "La identificación del usuario y la descripción del progreso son requeridas." });
+const enviarRespuestaProgreso = async (req, res) => {
+    const { identificacion, descripcion } = req.body;
+    if (!identificacion || !descripcion) {
+        return res.status(400).json({ error: "La identificación del usuario y la descripción del progreso son requeridas." });
+    }
+    try {
+        // Verificar y obtener el ID del usuario
+        const user = await Usuario.getUsuarioById(identificacion);
+        if (!user || !user.id) {
+            return res.status(404).json({ error: "Usuario no encontrado." });
         }
-        try {
-            // Verificar y obtener el ID del usuario
-            const user = await Usuario.getUsuarioById(identificacion);
-            if (!user || !user.id) {
-                return res.status(404).json({ error: "Usuario no encontrado." });
-            }
-            const id_usuario = user.id;
-            const fecha = new Date();
-            const options = {
-                timeZone: 'America/Bogota',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
-            };
-            const formatter = new Intl.DateTimeFormat('es-CO', options);
-            const partes = formatter.formatToParts(fecha);
-            const year = partes.find(part => part.type === 'year').value;
-            const month = partes.find(part => part.type === 'month').value;
-            const day = partes.find(part => part.type === 'day').value;
-            const hour = partes.find(part => part.type === 'hour').value;
-            const minute = partes.find(part => part.type === 'minute').value;
-            const second = partes.find(part => part.type === 'second').value;
-            const fechaActual = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
-            // Crear el progreso en el historial
-            const progresoId = await Historial.createProgreso({
-                id_usuario,
-                fecha: fechaActual,
-                descripcion
-            });
-            return res.status(201).json({
-                message: "Progreso en el historial creado exitosamente.",
-                progresoId
-            });
-        }
-        catch (err) {
-            console.error("Error al crear el progreso en el historial:", err);
-            return res.status(500).json({ error: "Error interno del servidor." });
-        }
-    };
+        const id_usuario = user.id;
+        const fecha = new Date();
+        const options = {
+            timeZone: 'America/Bogota',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        };
+        const formatter = new Intl.DateTimeFormat('es-CO', options);
+        const partes = formatter.formatToParts(fecha);
+        const year = partes.find(part => part.type === 'year').value;
+        const month = partes.find(part => part.type === 'month').value;
+        const day = partes.find(part => part.type === 'day').value;
+        const hour = partes.find(part => part.type === 'hour').value;
+        const minute = partes.find(part => part.type === 'minute').value;
+        const second = partes.find(part => part.type === 'second').value;
+        const fechaActual = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+        // Crear el progreso en el historial
+        const progresoId = await Historial.createProgreso({
+            id_usuario,
+            fecha: fechaActual,
+            descripcion
+        });
+        return res.status(201).json({
+            message: "Progreso en el historial creado exitosamente.",
+            progresoId
+        });
+    }
+    catch (err) {
+        console.error("Error al crear el progreso en el historial:", err);
+        return res.status(500).json({ error: "Error interno del servidor." });
+    }
+};
 
 
 module.exports = {
