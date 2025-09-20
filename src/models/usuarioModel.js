@@ -15,25 +15,6 @@ class Usuario {
         return rows;
     }
 
-    async createUsuario(data) {
-        const { nombre, apellido, identificacion, edad, sexo } = data;
-        const params = [nombre, apellido, identificacion, edad, sexo];
-        const [result] = await db.query(userQueries.insert, params);
-        return result.insertId;
-    }
-
-    async updateUsuario(identificacion, data) {
-        const { nombre, apellido, edad, sexo } = data;
-        const params = [nombre, apellido, edad, sexo, identificacion];
-        const [result] = await db.query(userQueries.update, params);
-        return result.affectedRows;
-    }
-
-    async deleteUsuario(identificacion) {
-        const params = [identificacion];
-        const [result] = await db.query(userQueries.delete, params);
-        return result.affectedRows;
-    }
 
     async getUsuarioById(identificacion) {
         const params = [identificacion];

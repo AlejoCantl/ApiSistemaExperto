@@ -15,7 +15,6 @@ app.use(express.json());
 app.use('/usuario', usuarioRoutes);
 app.use('/respuesta', respuestaRoutes);
 app.use('/historial', historialRoutes);
-app.use('/pregunta', preguntaRoutes);
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
