@@ -19,7 +19,6 @@
     "json-rules-engine": "^7.3.1",
     "mysql2": "^3.14.3",
     "nodemon": "^3.1.10",
-    "parser": "^0.1.4",
     "serverless-http": "^4.0.0"
   }
 }
