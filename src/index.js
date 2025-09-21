@@ -4,10 +4,10 @@ const cors = require('cors');
 const Serverless = require('serverless-http');
 
 // Importar rutas con rutas absolutas
-const usuarioRoutes = require('../src/routes/usuarioRoutes');
-const respuestaRoutes = require('../src/routes/respuestaRoutes');
-const historialRoutes = require('../src/routes/historialRoutes');
-const preguntaRoutes = require('../src/routes/preguntaRoutes');
+const usuarioRoutes = require('./routes/usuarioRoutes');
+const respuestaRoutes = require('./routes/respuestaRoutes');
+const historialRoutes = require('./routes/historialRoutes');
+const preguntaRoutes = require('./routes/preguntaRoutes');
 
 // Crear una nueva instancia de Express para Vercel
 const app = express();
