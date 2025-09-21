@@ -1,63 +1,36 @@
 const express = require("express")
 const cors = require("cors")
 
-// Import routes - adjust paths based on your actual structure
-const usuarioRoutes = require("../src/routes/usuarioRoutes")
-const respuestaRoutes = require("../src/routes/respuestaRoutes")
-const historialRoutes = require("../src/routes/historialRoutes")
-const preguntaRoutes = require("../src/routes/preguntaRoutes")
+const usuarioRoutes = require("../src/routes/usuarioRoutes.js")
+const respuestaRoutes = require("../src/routes/respuestaRoutes.js")
+const historialRoutes = require("../src/routes/historialRoutes.js")
+const preguntaRoutes = require("../src/routes/preguntaRoutes.js")
 
 const app = express()
-
-// Middlewares
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  }),
-)
+app.use(cors())
 app.use(express.json())
 
-// Handle preflight requests
-app.options("*", (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*")
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-  res.sendStatus(200)
-})
-
-// Routes - Note: Vercel will handle the /api prefix
+// Rutas sin prefijo /api para desarrollo local
 app.use("/usuario", usuarioRoutes)
 app.use("/respuesta", respuestaRoutes)
 app.use("/pregunta", preguntaRoutes)
 app.use("/historial", historialRoutes)
 
-// Health check route
+// Ruta de salud
 app.get("/health", (req, res) => {
-  res.json({
-    status: "OK",
-    message: "Vercel Serverless Function working",
-    timestamp: new Date().toISOString(),
-  })
+  res.json({ status: "OK", message: "Servidor local funcionando" })
 })
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error("Error:", err)
-  res.status(500).json({
-    error: "Internal Server Error",
-    message: err.message,
-  })
-})
+const serverless = require("serverless-http")
 
-// 404 handler
-app.use("*", (req, res) => {
-  res.status(404).json({
-    error: "Route not found",
-    path: req.originalUrl,
+// Solo iniciar servidor si se ejecuta directamente
+if (require.main === module) {
+  const PORT = 3000
+  app.listen(PORT, () => {
+    console.log(`🟢 Servidor LOCAL escuchando en http://localhost:${PORT}`)
+    console.log(`📋 Health check: http://localhost:${PORT}/health`)
   })
-})
+}
 
-// Export the Express app
 module.exports = app
+module.exports.handler = serverless(app)
