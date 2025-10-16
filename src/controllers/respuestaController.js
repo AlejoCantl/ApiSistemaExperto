@@ -1,6 +1,6 @@
 const Historial = require("../models/historialModel.js");
 const Hecho = require("../models/hechoModel.js");
-const Diagnostico = require("../models/DiagnosticoModel.js");
+const Diagnostico = require("../models/diagnosticoModel.js");
 const Usuario = require('../models/usuarioModel.js');
 const { Rules } = require("../models/rulesModel.js");
 
