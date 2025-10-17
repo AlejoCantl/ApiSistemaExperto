@@ -18,7 +18,7 @@ app.use("/historial", historialRoutes)
 
 // Ruta de salud
 app.get("/health", (req, res) => {
-  res.json({ status: "OK", message: "Servidor local funcionando" })
+  res.json({ status: "OK", message: "Servidor vercel funcionando" })
 })
 
 //const serverless = require("serverless-http")
